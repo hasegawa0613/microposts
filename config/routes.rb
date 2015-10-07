@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   delete 'logout'  => 'sessions#destroy'
 
   resources :users
+  resources :microposts
   resources :sessions, only: [:new, :create, :destroy]
 
   #get 'static_pages/home'
