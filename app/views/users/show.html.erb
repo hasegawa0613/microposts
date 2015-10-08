@@ -5,6 +5,8 @@
         <%= gravatar_for @user %>
         <%= @user.name %>
       </h1>
+      <%= link_to "フォロー(#{@followings_list.count})",:controller => "users", :action => "followings",:id => @user.id  %>
+      <%= link_to "フォロワー(#{@followers_list.count})",:controller => "users", :action => "followers",:id => @user.id %>
     </section>
   </aside>
   <div class="col-md-8">

@@ -4,6 +4,11 @@ class UsersController < ApplicationController
   def show # 追加
     @user = User.find(params[:id])
     @microposts = @user.microposts
+    
+    @followings = Relationship.select(:followed_id).where(:follower_id => params[:id]).map(&:followed_id)
+    @followings_list = User.find(@followings)
+    @followers = Relationship.select(:follower_id).where(:followed_id => params[:id]).map(&:follower_id)
+    @followers_list = User.find(@followers)
   end
   
   def new
@@ -32,6 +37,18 @@ class UsersController < ApplicationController
       # 保存に失敗した場合は編集画面へ戻す
       render 'edit'
     end
+  end
+  
+  def followings
+    @user = User.find(params[:id])
+    @followings = Relationship.select(:followed_id).where(:follower_id => params[:id]).map(&:followed_id)
+    @followings_list = User.find(@followings)
+  end
+  
+  def followers
+    @user = User.find(params[:id])
+    @followers = Relationship.select(:follower_id).where(:followed_id => params[:id]).map(&:follower_id)
+    @followers_list = User.find(@followers)
   end
 
   private
