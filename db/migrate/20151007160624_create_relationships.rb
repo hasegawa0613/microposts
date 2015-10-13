@@ -5,6 +5,7 @@ class CreateRelationships < ActiveRecord::Migration
       t.references :followed, index: true, foreign_key: true
 
       t.timestamps null: false
+      t.index [:follower_id, :followed_id], unique: true # この行を追加
     end
   end
 end
