@@ -5,10 +5,8 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @microposts = @user.microposts
     
-    @followings = Relationship.select(:followed_id).where(:follower_id => params[:id]).map(&:followed_id)
-    @followings_list = User.find(@followings)
-    @followers = Relationship.select(:follower_id).where(:followed_id => params[:id]).map(&:follower_id)
-    @followers_list = User.find(@followers)
+    @followings_list = @user.following_users
+    @followers_list =  @user.follower_users
   end
   
   def new
@@ -32,7 +30,8 @@ class UsersController < ApplicationController
   def update
     if @user.update(user_params)
       # 保存に成功した場合はトップページへリダイレクト
-      redirect_to @user , notice: 'プロフィールを編集しました'
+      flash[:success] = "プロフィールを編集しました"
+      redirect_to @user
     else
       # 保存に失敗した場合は編集画面へ戻す
       render 'edit'
@@ -41,14 +40,14 @@ class UsersController < ApplicationController
   
   def followings
     @user = User.find(params[:id])
-    @followings = Relationship.select(:followed_id).where(:follower_id => params[:id]).map(&:followed_id)
-    @followings_list = User.find(@followings)
+    @followings_list = @user.following_users
+    @followers_list =  @user.follower_users
   end
   
   def followers
     @user = User.find(params[:id])
-    @followers = Relationship.select(:follower_id).where(:followed_id => params[:id]).map(&:follower_id)
-    @followers_list = User.find(@followers)
+    @followings_list = @user.following_users
+    @followers_list =  @user.follower_users
   end
 
   private
